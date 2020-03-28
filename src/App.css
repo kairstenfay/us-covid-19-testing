@@ -1,0 +1,86 @@
+.App {
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.027);
+}
+
+.App-header {
+  background-color: #282c34;
+  height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.data:hover {
+  opacity: 0.5;
+}
+
+.data.positive {
+  fill: #fe625e;
+}
+
+.data.negative {
+  fill: #00b8aa;
+}
+
+.data.pending {
+  fill: #f2c80f;
+}
+
+.data.death {
+  fill: #374649;
+}
+
+.states {
+  fill: #374649;
+}
+
+.states :hover {
+  fill: red;
+}
+
+.state-borders {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 0.5px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+#viz-controls {
+  margin: 0 auto;
+  width: 80%;
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 500px) {
+  #rotate-device {
+    margin: 0;
+    height: 90vh;
+    width: 100vw;
+    background-color: rgba(0, 128, 128, 0.568);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+  }
+
+  #viz-controls {
+    display: none;
+  }
+
+  #data-viz {
+    display: none;
+  }
+}
+
+@media (min-width: 501px) {
+  #rotate-device {
+    display: none;
+  }
+}
