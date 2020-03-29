@@ -328,10 +328,8 @@ function App() {
 
   const Header = () => (
     <header className="App-header">
-      <p>
-        COVID-19 Deaths<br />
-        U.S. States and Territories
-      </p>
+      <h1>COVID-19 Testing Progress</h1>
+      <p>U.S. States and Territories</p>
       <span>
         <a href="https://github.com/kairstenfay/us-covid-19-testing">
           <img className="logo" id="gh" src={gh} alt="GitHub" /> GitHub
@@ -355,9 +353,9 @@ function App() {
   )
 
   const VizTitle = () => (
-    <p ref={descriptionRef}>
+    <h2 ref={descriptionRef}>
       Currently viewing {state}
-    </p>
+    </h2>
   )
 
   return (
