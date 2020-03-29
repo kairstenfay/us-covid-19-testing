@@ -14,22 +14,33 @@ const DEFAULT_STATE_VALUE = 'NY'
 const MAX_MAP_WIDTH = 900
 const MAX_MAP_HEIGHT = 400
 const MAP_RATIO = MAX_MAP_HEIGHT / MAX_MAP_WIDTH
-const LEGEND_PADDING = 5
+const LEGEND_PADDING = 7
 const LEGEND_BAR_HEIGHT = 10
 
 const SCATTERPLOT_RATIO = 0.4
 
+const VizControls = styled.p`
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #c7c7c7;
+`
 const LegendDiv = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
   text-align: left;
   align-items: center;
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #c7c7c7;
+  max-width: 200px;
 `
 const LegendUl = styled.ul`
   margin: 0;
   padding-left: ${LEGEND_PADDING}px
-  `
+`
   const LegendLi = styled.li`
   margin-top: -1px;
   list-style-type: none;
@@ -162,7 +173,7 @@ function App() {
   const Legend = () => {
     const renderLegendBars = (barName, index) => (
       <rect className={`data ${barName}`}
-        x={0}
+        x={LEGEND_PADDING}
         y={(10 + LEGEND_PADDING) * (index + 1)}
         width={BAR_WIDTH}
         height={LEGEND_BAR_HEIGHT} />
@@ -170,26 +181,26 @@ function App() {
 
     // Array('positive', 'negative').map((d, i) => addLegendBar(d, i))
     return (
-      <>
-        <p>Legend</p>
-        <LegendDiv id="legend">
-          <svg width={BAR_WIDTH} height={(LEGEND_BAR_HEIGHT + LEGEND_PADDING) * 3 }>
-            <g>
-              <circle className="data death"
-                r={CIRCLE_RADIUS}
-                cx={CIRCLE_RADIUS * 2}
-                cy={LEGEND_PADDING} />
-              { Array('positive', 'negative')
-                  .map((barName, i) => renderLegendBars(barName, i)) }
-            </g>
-          </svg>
-          <LegendUl>
-            <LegendLi>Deaths</LegendLi>
-            <LegendLi>Positive</LegendLi>
-            <LegendLi>Negative</LegendLi>
-          </LegendUl>
-        </LegendDiv>
-      </>
+      <LegendDiv id="legend">
+        <h3>Legend</h3>
+        <svg
+          width={BAR_WIDTH + LEGEND_PADDING}
+          height={(LEGEND_BAR_HEIGHT + LEGEND_PADDING) * 3 }>
+          <g>
+            <circle className="data death"
+              r={CIRCLE_RADIUS}
+              cx={LEGEND_PADDING + CIRCLE_RADIUS * 2}
+              cy={LEGEND_PADDING} />
+            { Array('positive', 'negative')
+                .map((barName, i) => renderLegendBars(barName, i)) }
+          </g>
+        </svg>
+        <LegendUl>
+          <LegendLi>Deaths</LegendLi>
+          <LegendLi>Positive</LegendLi>
+          <LegendLi>Negative</LegendLi>
+        </LegendUl>
+      </LegendDiv>
     )
   }
 
@@ -352,10 +363,13 @@ function App() {
     </select>
   )
 
-  const VizTitle = () => (
-    <h2 ref={descriptionRef}>
-      Currently viewing {state}
-    </h2>
+  const VizHeader = () => (
+    <>
+      <h2 ref={descriptionRef}>
+        Currently viewing {state}
+      </h2>
+      <Legend />
+    </>
   )
 
   return (
@@ -365,11 +379,11 @@ function App() {
       <p id="rotate-device">Please rotate your device</p>
 
       <div id="viz-controls">
-        <p>
+        <VizControls>
           Select a state from the map or the dropdown below.
           <br />
           <Selector />
-        </p>
+        </VizControls>
         <svg ref={mapRef}
           width={Math.min(dimensions.w, MAX_MAP_WIDTH)}
           height={Math.min(dimensions.h, MAX_MAP_HEIGHT)}
@@ -378,8 +392,7 @@ function App() {
       </div>
 
       <div id="data-viz">
-        <VizTitle />
-        <Legend />
+        <VizHeader />
         <svg ref={scatterplotRef}
           width={dimensions.w}
           height={dimensions.w / 2} />
