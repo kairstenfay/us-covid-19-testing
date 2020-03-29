@@ -58,6 +58,7 @@ const ToolTip = styled.p`
 `
 const IntroText = styled.div`
   width: 80%;
+  font-size: calc(10px + 1vmin);
 `
 
 async function getData() {
