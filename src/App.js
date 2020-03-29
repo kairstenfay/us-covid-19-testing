@@ -173,18 +173,27 @@ function App() {
       const xAxis = g => g
         .attr("transform", `translate(15,${dimensions.h - margin.bottom})`)
         .call(d3.axisBottom(x).tickFormat(i => formatDate(i)).tickSizeOuter(0))
+        .call(g => g.append("text")
+          .attr("x", dimensions.w / 2)
+          .attr("y", margin.bottom / 2)
+          .attr("fill", "black")
+          .attr("text-anchor", "middle")
+          .text("Date (mm-dd)"))
         .classed("xAxis", true)
 
       const yAxis = g => g
         .attr("transform", `translate(${margin.left},0)`)
         .call(d3.axisLeft(y))
+        // Remove the axis line
         .call(g => g.select(".domain").remove())
+        // Add axis title
         .call(g => g.append("text")
-            .attr("x", -margin.left)
-            .attr("y", 10)
-            .attr("fill", "currentColor")
-            .attr("text-anchor", "start")
-            .text(data.y))
+          .attr("transform", "rotate(-90)")
+          .attr("x", 0 - dimensions.h / 2)
+          .attr("y", 0 - margin.left / 2)
+          .attr("fill", "black")
+          .attr("text-anchor", "middle")
+          .text('Cumulative total'))
         .classed("yAxis", true)
 
       if (state !== DEFAULT_STATE_VALUE) data = data.filter(d => d.state === state)
