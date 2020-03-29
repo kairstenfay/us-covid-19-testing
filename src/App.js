@@ -14,7 +14,7 @@ const DEFAULT_STATE_VALUE = 'NY'
 const MAX_MAP_WIDTH = 900
 const MAX_MAP_HEIGHT = 400
 const MAP_RATIO = MAX_MAP_HEIGHT / MAX_MAP_WIDTH
-const LEGEND_PADDING = 7
+const LEGEND_PADDING = 5
 const LEGEND_BAR_HEIGHT = 10
 const TOOLTIP_WIDTH = 125
 
@@ -193,7 +193,7 @@ function App() {
     const renderLegendBars = (barName, index) => (
       <rect className={`data ${barName}`}
         x={LEGEND_PADDING}
-        y={(10 + LEGEND_PADDING) * (index + 1)}
+        y={(LEGEND_BAR_HEIGHT + LEGEND_PADDING) * index + 4}
         width={BAR_WIDTH}
         height={LEGEND_BAR_HEIGHT} />
     )
@@ -206,18 +206,18 @@ function App() {
           width={BAR_WIDTH + LEGEND_PADDING}
           height={(LEGEND_BAR_HEIGHT + LEGEND_PADDING) * 3 }>
           <g>
+            { Array('negative', 'positive')
+                .map((barName, i) => renderLegendBars(barName, i)) }
             <circle className="data death"
               r={CIRCLE_RADIUS}
               cx={LEGEND_PADDING + CIRCLE_RADIUS * 2}
-              cy={LEGEND_PADDING} />
-            { Array('positive', 'negative')
-                .map((barName, i) => renderLegendBars(barName, i)) }
+              cy={3 * LEGEND_BAR_HEIGHT + LEGEND_PADDING + 3} />
           </g>
         </svg>
         <LegendUl>
-          <LegendLi>Deaths</LegendLi>
-          <LegendLi>Positive</LegendLi>
           <LegendLi>Negative</LegendLi>
+          <LegendLi>Positive</LegendLi>
+          <LegendLi>Deaths</LegendLi>
         </LegendUl>
       </LegendDiv>
     )
