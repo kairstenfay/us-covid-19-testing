@@ -46,7 +46,7 @@
 }
 
 .states :hover {
-  fill: red;
+  fill: #fe625e;
 }
 
 .state-borders {
@@ -93,7 +93,7 @@
     margin: 0;
     height: 90vh;
     width: 100vw;
-    background-color: rgba(0, 128, 128, 0.568);
+    background-color: #00b8aa;
     display: flex;
     justify-content: center;
     align-items: center;
