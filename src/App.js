@@ -153,7 +153,7 @@ function App() {
         .join("circle")
         .classed('data death', true)
         .attr("data-state", d => d.state)
-        .attr("cx", d => BAR_WIDTH / 2 + CIRCLE_RADIUS / 2 + x(parseDate(d.rawDate)))
+        .attr("cx", d => BAR_WIDTH / 2 + CIRCLE_RADIUS / 3 + x(parseDate(d.rawDate)))
         .attr("cy", d => y(d.death))
           .attr("r", CIRCLE_RADIUS)
           .on("mouseover", function(d) {
@@ -187,8 +187,10 @@ function App() {
 
       // Axes
       const xAxis = g => g
-        .attr("transform", `translate(15,${dimensions.h - margin.bottom})`)
-        .call(d3.axisBottom(x).tickFormat(i => formatDate(i)).tickSizeOuter(0))
+        .attr("transform", `translate(${BAR_WIDTH / 2},${dimensions.h - margin.bottom})`)
+        .call(d3.axisBottom(x)
+                .tickFormat(i => formatDate(i))
+                .tickSizeOuter(0))
         .call(g => g.append("text")
           .attr("x", dimensions.w / 2)
           .attr("y", margin.bottom * 4)
