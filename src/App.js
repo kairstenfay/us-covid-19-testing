@@ -61,7 +61,7 @@ const scales = (data, dimensions) => {
       .range([margin.left, dimensions.w - margin.right])
 
   const y = d3.scaleLinear()
-      .domain([0, d3.max(data, d => d.death) || 1]).nice()
+      .domain([0, d3.max(data, d => d.total) || 1]).nice()
       .range([dimensions.h - margin.bottom, margin.top])
 
   return {x, y}
@@ -173,6 +173,19 @@ function App() {
           })
       )
 
+      const addBars = (barName) => (
+        svg.append("g")
+        .selectAll("rect")
+        .data(data)
+        .join("rect")
+            .classed(`data ${barName}`, true)
+            .attr("data-state", d => d.state)
+            .attr("x", d => x(parseDate(d.rawDate)))
+            .attr("y", d => y(d[barName]))
+            .attr("height", d => d[`${barName}-height`])
+            .attr("width", BAR_WIDTH)
+      )
+
       // Axes
       const xAxis = g => g
         .attr("transform", `translate(15,${dimensions.h - margin.bottom})`)
@@ -200,14 +213,22 @@ function App() {
           .text('Cumulative total'))
         .classed("yAxis", true)
 
-      if (state !== DEFAULT_STATE_VALUE) data = data.filter(d => d.state === state)
+      data = data.filter(d => d.state === state)
 
       // Create scales after filtering data
       const {x, y} = scales(data, dimensions)
 
+      data.forEach(d => {
+        d['positive-height'] = y(0) - y(d.positive)
+        d['negative-height'] = y(d.positive) - y(d.negative)
+        d['pending-height'] = y(d.positive) - y(d.negative) - y(d.pending)
+      })
+
       svg.selectAll("circle").remove()
       svg.selectAll("g").remove()
 
+      addBars('positive')
+      addBars('negative')
       addDataPoints()
 
       svg.append("g")
