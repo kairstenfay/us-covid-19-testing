@@ -10,7 +10,9 @@ const margin = ({top: 80, right: 120, bottom: 80, left: 100})
 const BAR_WIDTH = 10  // todo programmatically determine width
 const CIRCLE_RADIUS = 3  // todo programatically determine radius
 const DEFAULT_STATE_VALUE = 'select'
-const MAP_RATIO = 0.5
+const MAX_MAP_WIDTH = 900
+const MAX_MAP_HEIGHT = 400
+const MAP_RATIO = MAX_MAP_HEIGHT / MAX_MAP_WIDTH
 
 async function getData() {
   const data = await d3.json("https://covidtracking.com/api/states/daily")
@@ -216,14 +218,13 @@ function App() {
 
 // Render US States choropleth map
   useEffect(() => {
-    const mapWidth = dimensions.w / 2
-    const mapHeight = dimensions.w * MAP_RATIO
-
+    const mapWidth = Math.min(dimensions.w, MAX_MAP_WIDTH) / 3
+    const mapHeight = Math.min(dimensions.h, MAX_MAP_HEIGHT)
     const svg = d3.select(mapRef.current)
 
     const projection = d3.geoAlbers()
-      .scale(mapWidth * .75)
-      .translate([mapWidth * .75, mapHeight * .65])
+      .scale(mapWidth)
+      .translate([mapWidth * 1.5, mapHeight * .6])
 
     const path = d3.geoPath().projection(projection)
     const us = getGeojson()
@@ -242,8 +243,6 @@ function App() {
       svg.append("path")
           .classed("state-borders", true)
           .attr("d", path)
-          .style('width', dimensions.w + 'px')
-          .style('height', dimensions.h + 'px')
     })
 
   }, [dimensions])
@@ -296,15 +295,18 @@ function App() {
           <br />
           <Selector />
         </p>
-        <svg
-          ref={mapRef} width={dimensions.w} height={dimensions.w / 2}
+        <svg ref={mapRef}
+          width={Math.min(dimensions.w, MAX_MAP_WIDTH)}
+          height={Math.min(dimensions.h, MAX_MAP_HEIGHT)}
           onClick={handleMapClick} />
         <br />
       </div>
 
       <div id="data-viz">
         <VizTitle />
-        <svg ref={scatterplotRef} width={dimensions.w} height={dimensions.h}></svg>
+        <svg ref={scatterplotRef}
+          width={dimensions.w}
+          height={dimensions.w / 2} />
         <p id="tooltip" style={tooltipStyles}>
             {tooltipText}
         </p>
