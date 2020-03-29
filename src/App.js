@@ -6,7 +6,7 @@ import twitter from "./img/twitter.png"
 
 const parseDate = d3.timeParse("%Y%m%d")
 const formatDate = d3.timeFormat("%m-%d")
-const margin = ({top: 80, right: 80, bottom: 80, left: 80})
+const margin = ({top: 80, right: 120, bottom: 80, left: 100})
 const BAR_WIDTH = 10  // todo programmatically determine width
 const CIRCLE_RADIUS = 3  // todo programatically determine radius
 const DEFAULT_STATE_VALUE = 'select'
@@ -80,6 +80,10 @@ function App() {
     h: window.innerWidth / 2,
     w: window.innerWidth
   })
+  const [tooltipStyles, setTooltipStyles] = useState({
+    display: "none"
+  })
+  const [tooltipText, setTooltipText] = useState()
 
   const scatterplotRef = useRef()
   const mapRef = useRef()
@@ -117,6 +121,19 @@ function App() {
     }
   })
 
+  const formatTooltipText = (datum) => {
+    const totalDeaths = datum.death === 1
+      ? 'was 1 total death'
+      : `were ${datum.death} total deaths`
+
+    return (
+      <span>
+        In {datum.state}, as of {datum.date},
+        there {totalDeaths} from COVID-19.
+      </span>
+    )
+  }
+
 // Render scatterplot
   useEffect(() => {
     data.then(data => {  // todo catch error
@@ -136,8 +153,20 @@ function App() {
         .attr("cx", d => BAR_WIDTH / 2 + CIRCLE_RADIUS / 2 + x(parseDate(d.rawDate)))
         .attr("cy", d => y(d.death))
           .attr("r", CIRCLE_RADIUS)
-          .transition(t)
-          .style("fill", "red")
+          .on("mouseover", function(d) {
+            setTooltipText(formatTooltipText(d))
+            setTooltipStyles({
+              position: "absolute",
+              left: `${d3.event.pageX + 5}px`,
+              top: `${d3.event.pageY - 32}px`
+            })
+          })
+          .on("mouseout", function(d) {
+            setTooltipStyles({
+              display: "none"
+            })
+            setTooltipText()
+          })
       )
 
       // Axes
@@ -267,6 +296,9 @@ function App() {
       <div id="data-viz">
         <VizTitle />
         <svg ref={scatterplotRef} width={dimensions.w} height={dimensions.h}></svg>
+        <p id="tooltip" style={tooltipStyles}>
+            {tooltipText}
+        </p>
       </div>
     </div>
   );
