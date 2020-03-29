@@ -83,14 +83,15 @@ function App() {
   const mapRef = useRef()
   const descriptionRef = useRef()
 
+  const scrollToViz = () => descriptionRef.current.scrollIntoView({ behavior: "smooth" })
+
   const handleClick = (event) => {
     const target = event.target.__data__
     if (target) {
       // Address known bug with Puerto Rico fips code in mapping data
       const fips = target.id === '72' ? '43' : target.id
       fipsMapper.then(mapper => setState(mapper[fips].abbreviation))
-      // window.scrollTo(0, scatterplotRef.current)
-      descriptionRef.current.scrollIntoView({ behavior: "smooth" })
+      scrollToViz()
     }
   }
 
@@ -214,7 +215,10 @@ function App() {
   const Selector = () => (
     <select id="state-selector"
       value={state}
-      onChange={(e) => setState(e.target.value)}>
+      onChange={(e) => {
+        setState(e.target.value)
+        scrollToViz()
+      }}>
 
       {stateList.map(state => (
         <option key={state} value={state}>{state}</option>
