@@ -85,7 +85,7 @@ function App() {
 
   const scrollToViz = () => descriptionRef.current.scrollIntoView({ behavior: "smooth" })
 
-  const handleClick = (event) => {
+  const handleMapClick = (event) => {
     const target = event.target.__data__
     if (target) {
       // Address known bug with Puerto Rico fips code in mapping data
@@ -93,6 +93,11 @@ function App() {
       fipsMapper.then(mapper => setState(mapper[fips].abbreviation))
       scrollToViz()
     }
+  }
+
+  const handleSelectorClick = (event) => {
+    setState(event.target.value)
+    scrollToViz()
   }
 
   useEffect(() => {
@@ -215,10 +220,7 @@ function App() {
   const Selector = () => (
     <select id="state-selector"
       value={state}
-      onChange={(e) => {
-        setState(e.target.value)
-        scrollToViz()
-      }}>
+      onChange={handleSelectorClick}>
 
       {stateList.map(state => (
         <option key={state} value={state}>{state}</option>
@@ -248,7 +250,7 @@ function App() {
         </p>
         <svg
           ref={mapRef} width={dimensions.w} height={dimensions.w / 2}
-          onClick={handleClick} />
+          onClick={handleMapClick} />
         <br />
       </div>
 
