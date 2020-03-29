@@ -9,7 +9,7 @@ const formatDate = d3.timeFormat("%m-%d")
 const margin = ({top: 80, right: 120, bottom: 10, left: 100})
 const BAR_WIDTH = 10  // todo programmatically determine width
 const CIRCLE_RADIUS = 3  // todo programatically determine radius
-const DEFAULT_STATE_VALUE = 'select'
+const DEFAULT_STATE_VALUE = 'NY'
 const MAX_MAP_WIDTH = 900
 const MAX_MAP_HEIGHT = 400
 const MAP_RATIO = MAX_MAP_HEIGHT / MAX_MAP_WIDTH
@@ -141,8 +141,7 @@ function App() {
 // Render scatterplot
   useEffect(() => {
     data.then(data => {  // todo catch error
-      setStateList([DEFAULT_STATE_VALUE].concat(
-        Array(...new Set(data.map(d => d.state)))))
+      setStateList(Array(...new Set(data.map(d => d.state))))
 
       const svg = d3.select(scatterplotRef.current)
 
@@ -300,9 +299,7 @@ function App() {
 
   const VizTitle = () => (
     <p ref={descriptionRef}>
-      { state === DEFAULT_STATE_VALUE
-        ? "Viewing all states"
-        : `Currently viewing ${state}` }
+      Currently viewing {state}
     </p>
   )
 
