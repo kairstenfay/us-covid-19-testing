@@ -56,6 +56,10 @@ const ToolTip = styled.p`
   ${foregroundStyling}
 }
 `
+const IntroText = styled.div`
+  width: 80%;
+`
+
 async function getData() {
   const data = await d3.json("https://covidtracking.com/api/states/daily")
 
@@ -378,13 +382,28 @@ function App() {
     </select>
   )
 
+  const Intro = () => (
+    <IntroText>
+      <p>
+        These data are sourced from state public health authorities
+        by <a href="https://covidtracking.com/">covidtracking.com</a>. The API
+        notes that <a href="https://covidtracking.com/about-tracker/">not all
+        states report numbers consistently</a>.
+      </p>
+      <p>
+        Because there are so much missing data, especially from states early in
+        the outbreak, I am casting <code>null</code> values to 0 here.
+      </p>
+    </IntroText>
+  )
+
   const VizHeader = () => (
-    <>
+    <div id="viz-header">
       <h2 ref={descriptionRef}>
         Currently viewing {state}
       </h2>
       <Legend />
-    </>
+    </div>
   )
 
   return (
@@ -392,28 +411,30 @@ function App() {
       <Header />
 
       <p id="rotate-device">Please rotate your device</p>
-
-      <div id="viz-controls">
-        <VizControls>
-          Select a state from the map or the dropdown below.
+      <div className="App-body">
+        <Intro />
+        <div id="viz-controls">
+          <VizControls>
+            Select a state from the map or the dropdown below.
+            <br />
+            <Selector />
+          </VizControls>
+          <svg ref={mapRef}
+            width={Math.min(dimensions.w, MAX_MAP_WIDTH)}
+            height={Math.min(dimensions.h, MAX_MAP_HEIGHT)}
+            onClick={handleMapClick} />
           <br />
-          <Selector />
-        </VizControls>
-        <svg ref={mapRef}
-          width={Math.min(dimensions.w, MAX_MAP_WIDTH)}
-          height={Math.min(dimensions.h, MAX_MAP_HEIGHT)}
-          onClick={handleMapClick} />
-        <br />
-      </div>
+        </div>
 
-      <div id="data-viz">
-        <VizHeader />
-        <svg ref={scatterplotRef}
-          width={dimensions.w}
-          height={dimensions.w / 2} />
-        <ToolTip id="tooltip" style={tooltipStyles}>
-            {tooltipText}
-        </ToolTip>
+        <div id="data-viz">
+          <VizHeader />
+          <svg ref={scatterplotRef}
+            width={dimensions.w}
+            height={dimensions.w / 2} />
+          <ToolTip id="tooltip" style={tooltipStyles}>
+              {tooltipText}
+          </ToolTip>
+        </div>
       </div>
     </div>
   );

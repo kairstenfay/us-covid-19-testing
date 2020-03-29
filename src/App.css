@@ -21,6 +21,12 @@
   text-decoration: none;
 }
 
+.App-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .data:hover {
   opacity: 0.5;
 }
