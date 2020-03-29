@@ -5,13 +5,19 @@
 
 .App-header {
   background-color: #282c34;
-  height: 10vh;
+  min-height: 10vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+.App-header a {
+  color: white;
+  font-size: calc(2px + 2vmin);
+  text-decoration: none;
 }
 
 .data:hover {
@@ -56,6 +62,11 @@
   width: 80%;
   display: flex;
   align-items: center;
+}
+
+.logo {
+  width: 20px;
+  padding-left: 10px;
 }
 
 @media (max-width: 500px) {

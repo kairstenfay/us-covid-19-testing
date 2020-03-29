@@ -1,6 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
 import "./App.css";
 import * as d3 from "d3";
+import gh from "./img/gh.png"
+import twitter from "./img/twitter.png"
 
 const parseDate = d3.timeParse("%Y%m%d")
 const formatDate = d3.timeFormat("%m-%d")
@@ -214,6 +216,14 @@ function App() {
         COVID-19 Deaths<br />
         U.S. States and Territories
       </p>
+      <span>
+        <a href="https://github.com/kairstenfay/us-covid-19-testing">
+          <img className="logo" id="gh" src={gh} alt="GitHub" /> GitHub
+        </a>
+        <a href="https://twitter.com/databae_">
+          <img className="logo" id="twitter" src={twitter} alt="Twitter" /> Twitter
+        </a>
+      </span>
     </header>
   )
 
