@@ -1,6 +1,7 @@
 .App {
   text-align: center;
   background-color: rgba(0, 0, 0, 0.027);
+  min-height: 100vh;
 }
 
 .App-header {
@@ -62,6 +63,7 @@
   width: 80%;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 #tooltip {

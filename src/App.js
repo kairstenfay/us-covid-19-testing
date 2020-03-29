@@ -6,13 +6,15 @@ import twitter from "./img/twitter.png"
 
 const parseDate = d3.timeParse("%Y%m%d")
 const formatDate = d3.timeFormat("%m-%d")
-const margin = ({top: 80, right: 120, bottom: 80, left: 100})
+const margin = ({top: 80, right: 120, bottom: 10, left: 100})
 const BAR_WIDTH = 10  // todo programmatically determine width
 const CIRCLE_RADIUS = 3  // todo programatically determine radius
 const DEFAULT_STATE_VALUE = 'select'
 const MAX_MAP_WIDTH = 900
 const MAX_MAP_HEIGHT = 400
 const MAP_RATIO = MAX_MAP_HEIGHT / MAX_MAP_WIDTH
+
+const SCATTERPLOT_RATIO = 0.4
 
 async function getData() {
   const data = await d3.json("https://covidtracking.com/api/states/daily")
@@ -46,9 +48,9 @@ async function getFipsMapper() {
 /**
  *
  * @param {*} data
- * @param {Object} d dimensions {w: int, h: int}
+ * @param {Object} dimensions {w: int, h: int}
  */
-const scales = (data, d) => {
+const scales = (data, dimensions) => {
   const dateRange = data.map(d => d.rawDate)
     .filter((value, index, arr) => arr.indexOf(value) === index)
     .sort()
@@ -56,11 +58,11 @@ const scales = (data, d) => {
 
   const x = d3.scaleTime()
       .domain([Math.min(...dateRange), Math.max(...dateRange)])
-      .range([margin.left, d.w - margin.right])
+      .range([margin.left, dimensions.w - margin.right])
 
   const y = d3.scaleLinear()
       .domain([0, d3.max(data, d => d.death) || 1]).nice()
-      .range([d.h - margin.bottom, margin.top])
+      .range([dimensions.h - margin.bottom, margin.top])
 
   return {x, y}
 }
@@ -79,7 +81,7 @@ function App() {
   const [state, setState] = useState(DEFAULT_STATE_VALUE)
   const [stateList, setStateList] = useState([DEFAULT_STATE_VALUE])
   const [dimensions, setDimensions] = useState({
-    h: window.innerWidth / 2,
+    h: window.innerWidth * SCATTERPLOT_RATIO,
     w: window.innerWidth
   })
   const [tooltipStyles, setTooltipStyles] = useState({
@@ -111,7 +113,7 @@ function App() {
   useEffect(() => {
     function handleResize() {
       setDimensions({
-        h: window.innerWidth / 2.5,
+        h: window.innerWidth * SCATTERPLOT_RATIO,
         w: window.innerWidth
       })
     }
@@ -177,7 +179,7 @@ function App() {
         .call(d3.axisBottom(x).tickFormat(i => formatDate(i)).tickSizeOuter(0))
         .call(g => g.append("text")
           .attr("x", dimensions.w / 2)
-          .attr("y", margin.bottom / 2)
+          .attr("y", margin.bottom * 4)
           .attr("fill", "black")
           .attr("text-anchor", "middle")
           .text("Date (mm-dd)"))
@@ -218,13 +220,13 @@ function App() {
 
 // Render US States choropleth map
   useEffect(() => {
-    const mapWidth = Math.min(dimensions.w, MAX_MAP_WIDTH) / 3
+    const mapWidth = Math.min(dimensions.w, MAX_MAP_WIDTH)
     const mapHeight = Math.min(dimensions.h, MAX_MAP_HEIGHT)
     const svg = d3.select(mapRef.current)
 
     const projection = d3.geoAlbers()
-      .scale(mapWidth)
-      .translate([mapWidth * 1.5, mapHeight * .6])
+      .scale(mapWidth * .4)
+      .translate([mapWidth / 4, mapHeight * .6])
 
     const path = d3.geoPath().projection(projection)
     const us = getGeojson()
