@@ -7,7 +7,7 @@ import styled from "styled-components"
 
 const parseDate = d3.timeParse("%Y%m%d")
 const formatDate = d3.timeFormat("%m-%d")
-const margin = ({top: 80, right: 120, bottom: 10, left: 100})
+const margin = ({top: 80, right: 80, bottom: 10, left: 100})
 const BAR_WIDTH = 10  // todo programmatically determine width
 const CIRCLE_RADIUS = 3  // todo programatically determine radius
 const DEFAULT_STATE_VALUE = 'NY'
@@ -16,14 +16,18 @@ const MAX_MAP_HEIGHT = 400
 const MAP_RATIO = MAX_MAP_HEIGHT / MAX_MAP_WIDTH
 const LEGEND_PADDING = 7
 const LEGEND_BAR_HEIGHT = 10
+const TOOLTIP_WIDTH = 100
 
 const SCATTERPLOT_RATIO = 0.4
 
-const VizControls = styled.p`
+const foregroundStyling = `
   background-color: white;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #c7c7c7;
+`
+const VizControls = styled.p`
+  ${foregroundStyling}
 `
 const LegendDiv = styled.div`
   display: flex;
@@ -31,22 +35,27 @@ const LegendDiv = styled.div`
   justify-content: center;
   text-align: left;
   align-items: center;
-  background-color: white;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #c7c7c7;
   max-width: 200px;
+  ${foregroundStyling}
 `
 const LegendUl = styled.ul`
   margin: 0;
   padding-left: ${LEGEND_PADDING}px
 `
-  const LegendLi = styled.li`
+const LegendLi = styled.li`
   margin-top: -1px;
   list-style-type: none;
   line-height: ${LEGEND_BAR_HEIGHT + LEGEND_PADDING}px;
 `
-
+const ToolTip = styled.p`
+  margin: 0;
+  padding: 5px;
+  text-align: left;
+  width: ${TOOLTIP_WIDTH}px;
+  opacity: 90%;
+  ${foregroundStyling}
+}
+`
 async function getData() {
   const data = await d3.json("https://covidtracking.com/api/states/daily")
 
@@ -157,15 +166,21 @@ function App() {
   })
 
   const formatTooltipText = (datum) => {
-    const totalDeaths = datum.death === 1
-      ? 'was 1 total death'
-      : `were ${datum.death} total deaths`
-
     return (
-      <span>
-        In {datum.state}, as of {datum.date},
-        there {totalDeaths} from COVID-19.
-      </span>
+      <table>
+        <tr>
+          <td>state</td>
+          <td>{datum.state}</td>
+        </tr>
+        <tr>
+          <td>date</td>
+          <td>{datum.date}</td>
+        </tr>
+        <tr>
+          <td>deaths</td>
+          <td>{datum.death}</td>
+        </tr>
+      </table>
     )
   }
 
@@ -226,8 +241,8 @@ function App() {
             setTooltipText(formatTooltipText(d))
             setTooltipStyles({
               position: "absolute",
-              left: `${d3.event.pageX + 5}px`,
-              top: `${d3.event.pageY - 32}px`
+              left: `${d3.event.pageX - TOOLTIP_WIDTH / 2}px`,
+              top: `${d3.event.pageY - 100}px`
             })
           })
           .on("mouseout", function(d) {
@@ -396,9 +411,9 @@ function App() {
         <svg ref={scatterplotRef}
           width={dimensions.w}
           height={dimensions.w / 2} />
-        <p id="tooltip" style={tooltipStyles}>
+        <ToolTip id="tooltip" style={tooltipStyles}>
             {tooltipText}
-        </p>
+        </ToolTip>
       </div>
     </div>
   );
