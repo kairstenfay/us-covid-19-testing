@@ -7,7 +7,7 @@ import styled from "styled-components"
 
 const parseDate = d3.timeParse("%Y%m%d")
 const formatDate = d3.timeFormat("%m-%d")
-const margin = ({top: 10, right: 80, bottom: 10, left: 100})
+const margin = ({top: 10, right: 90, bottom: 10, left: 100})
 const BAR_WIDTH = 10  // todo programmatically determine width
 const CIRCLE_RADIUS = 3  // todo programatically determine radius
 const DEFAULT_STATE_VALUE = 'NY'
@@ -16,7 +16,7 @@ const MAX_MAP_HEIGHT = 400
 const MAP_RATIO = MAX_MAP_HEIGHT / MAX_MAP_WIDTH
 const LEGEND_PADDING = 7
 const LEGEND_BAR_HEIGHT = 10
-const TOOLTIP_WIDTH = 100
+const TOOLTIP_WIDTH = 125
 
 const SCATTERPLOT_RATIO = 0.4
 
@@ -169,20 +169,20 @@ function App() {
     }
   })
 
-  const formatTooltipText = (datum) => {
+  const formatTooltipText = (datum, dataName) => {
     return (
       <table>
         <tr>
-          <td>state</td>
+          <th>state</th>
           <td>{datum.state}</td>
         </tr>
         <tr>
-          <td>date</td>
+          <th>date</th>
           <td>{datum.date}</td>
         </tr>
         <tr>
-          <td>deaths</td>
-          <td>{datum.death}</td>
+          <th>{dataName}s</th>
+          <td>{datum[dataName]}</td>
         </tr>
       </table>
     )
@@ -241,20 +241,20 @@ function App() {
         .attr("cx", d => BAR_WIDTH / 2 + CIRCLE_RADIUS / 3 + x(parseDate(d.rawDate)))
         .attr("cy", d => y(d.death))
           .attr("r", CIRCLE_RADIUS)
-          .on("mouseover", function(d) {
-            setTooltipText(formatTooltipText(d))
-            setTooltipStyles({
-              position: "absolute",
-              left: `${d3.event.pageX - TOOLTIP_WIDTH / 2}px`,
-              top: `${d3.event.pageY - 100}px`
-            })
+        .on("mouseover", function(d) {
+          setTooltipText(formatTooltipText(d, 'death'))
+          setTooltipStyles({
+            position: "absolute",
+            left: `${d3.event.pageX - (TOOLTIP_WIDTH + BAR_WIDTH) / 2}px`,
+            top: `${d3.event.pageY - 100}px`
           })
-          .on("mouseout", function(d) {
-            setTooltipStyles({
-              display: "none"
-            })
-            setTooltipText()
+        })
+        .on("mouseout", function(d) {
+          setTooltipStyles({
+            display: "none"
           })
+          setTooltipText()
+        })
       )
 
       const addBars = (barName) => (
@@ -268,6 +268,20 @@ function App() {
             .attr("y", d => y(d[barName]))
             .attr("height", d => d[`${barName}-height`])
             .attr("width", BAR_WIDTH)
+          .on("mouseover", function(d) {
+            setTooltipText(formatTooltipText(d, barName))
+            setTooltipStyles({
+              position: "absolute",
+              left: `${d3.event.pageX - (TOOLTIP_WIDTH + BAR_WIDTH) / 2}px`,
+              top: `${d3.event.pageY - 100}px`
+            })
+          })
+          .on("mouseout", function(d) {
+            setTooltipStyles({
+              display: "none"
+            })
+            setTooltipText()
+          })
       )
 
       // Axes
