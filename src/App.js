@@ -7,7 +7,7 @@ import styled from "styled-components"
 
 const parseDate = d3.timeParse("%Y%m%d")
 const formatDate = d3.timeFormat("%m-%d")
-const margin = ({top: 80, right: 80, bottom: 10, left: 100})
+const margin = ({top: 10, right: 80, bottom: 10, left: 100})
 const BAR_WIDTH = 10  // todo programmatically determine width
 const CIRCLE_RADIUS = 3  // todo programatically determine radius
 const DEFAULT_STATE_VALUE = 'NY'

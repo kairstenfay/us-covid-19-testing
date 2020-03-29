@@ -1,3 +1,8 @@
+h1 {
+  font-size: calc(15px + 2vmin);
+  margin-bottom: 5px;
+}
+
 .App {
   text-align: center;
   background-color: rgba(0, 0, 0, 0.027);
@@ -6,7 +11,6 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 10vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,6 +23,7 @@
   color: white;
   font-size: calc(2px + 2vmin);
   text-decoration: none;
+  height: 20vh;
 }
 
 .App-body {
@@ -55,6 +60,11 @@
   fill: #fe625e;
 }
 
+.logo {
+  width: 20px;
+  padding-left: 10px;
+}
+
 .state-borders {
   fill: none;
   stroke: #fff;
@@ -70,6 +80,10 @@
   align-items: center;
 }
 
+#viz-header {
+  position: sticky;
+}
+
 #viz-controls {
   margin: 0 auto;
   width: 80%;
@@ -78,15 +92,14 @@
   justify-content: center;
 }
 
-.logo {
-  width: 20px;
-  padding-left: 10px;
-}
-
 @media (max-width: 500px) {
+  .App-header {
+    height: 20vh;
+  }
+
   #rotate-device {
     margin: 0;
-    height: 90vh;
+    height: 80vh;
     width: 100vw;
     background-color: #00b8aa;
     display: flex;
@@ -95,11 +108,7 @@
     font-size: 32px;
   }
 
-  #viz-controls {
-    display: none;
-  }
-
-  #data-viz {
+  .App-body {
     display: none;
   }
 }
