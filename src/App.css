@@ -87,7 +87,7 @@
   padding-left: 10px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 500px) {
   #rotate-device {
     margin: 0;
     height: 90vh;
@@ -108,7 +108,7 @@
   }
 }
 
-@media (min-width: 601px) {
+@media (min-width: 501px) {
   #rotate-device {
     display: none;
   }
