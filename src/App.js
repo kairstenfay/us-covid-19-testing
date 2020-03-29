@@ -399,10 +399,15 @@ function App() {
   const Intro = () => (
     <IntroText>
       <p>
+        How many COVID-19 tests have U.S. states and territories administered?
+        These answers are surprisingly hard to find, as the CDC does not
+        currently report the number of people tested or test results.
+      </p>
+      <p>
         These data are sourced from state public health authorities
-        by <a href="https://covidtracking.com/">covidtracking.com</a>. The API
-        notes that <a href="https://covidtracking.com/about-tracker/">not all
-        states report numbers consistently</a>.
+        by <a href="https://covidtracking.com/">The COVID Tracking Project</a>.
+        The site notes that <a href="https://covidtracking.com/about-tracker/">
+        not all states report numbers consistently</a>.
       </p>
       <p>
         Because there are so much missing data, especially from states early in
