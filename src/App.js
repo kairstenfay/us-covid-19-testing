@@ -3,6 +3,7 @@ import "./App.css";
 import * as d3 from "d3";
 import gh from "./img/gh.png"
 import twitter from "./img/twitter.png"
+import styled from "styled-components"
 
 const parseDate = d3.timeParse("%Y%m%d")
 const formatDate = d3.timeFormat("%m-%d")
@@ -13,8 +14,27 @@ const DEFAULT_STATE_VALUE = 'NY'
 const MAX_MAP_WIDTH = 900
 const MAX_MAP_HEIGHT = 400
 const MAP_RATIO = MAX_MAP_HEIGHT / MAX_MAP_WIDTH
+const LEGEND_PADDING = 5
+const LEGEND_BAR_HEIGHT = 10
 
 const SCATTERPLOT_RATIO = 0.4
+
+const LegendDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  text-align: left;
+  align-items: center;
+`
+const LegendUl = styled.ul`
+  margin: 0;
+  padding-left: ${LEGEND_PADDING}px
+  `
+  const LegendLi = styled.li`
+  margin-top: -1px;
+  list-style-type: none;
+  line-height: ${LEGEND_BAR_HEIGHT + LEGEND_PADDING}px;
+`
 
 async function getData() {
   const data = await d3.json("https://covidtracking.com/api/states/daily")
@@ -135,6 +155,41 @@ function App() {
         In {datum.state}, as of {datum.date},
         there {totalDeaths} from COVID-19.
       </span>
+    )
+  }
+
+// Render legend
+  const Legend = () => {
+    const renderLegendBars = (barName, index) => (
+      <rect className={`data ${barName}`}
+        x={0}
+        y={(10 + LEGEND_PADDING) * (index + 1)}
+        width={BAR_WIDTH}
+        height={LEGEND_BAR_HEIGHT} />
+    )
+
+    // Array('positive', 'negative').map((d, i) => addLegendBar(d, i))
+    return (
+      <>
+        <p>Legend</p>
+        <LegendDiv id="legend">
+          <svg width={BAR_WIDTH} height={(LEGEND_BAR_HEIGHT + LEGEND_PADDING) * 3 }>
+            <g>
+              <circle className="data death"
+                r={CIRCLE_RADIUS}
+                cx={CIRCLE_RADIUS * 2}
+                cy={LEGEND_PADDING} />
+              { Array('positive', 'negative')
+                  .map((barName, i) => renderLegendBars(barName, i)) }
+            </g>
+          </svg>
+          <LegendUl>
+            <LegendLi>Deaths</LegendLi>
+            <LegendLi>Positive</LegendLi>
+            <LegendLi>Negative</LegendLi>
+          </LegendUl>
+        </LegendDiv>
+      </>
     )
   }
 
@@ -326,6 +381,7 @@ function App() {
 
       <div id="data-viz">
         <VizTitle />
+        <Legend />
         <svg ref={scatterplotRef}
           width={dimensions.w}
           height={dimensions.w / 2} />
