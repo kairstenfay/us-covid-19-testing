@@ -238,7 +238,25 @@ function App() {
     const path = d3.geoPath().projection(projection)
     const us = getGeojson()
 
-    us.then(us => {
+    Promise.all([us, data]).then((values) => {
+      const us = values[0]
+      const data = values[1]
+
+      const maxValuesPerState = d3.nest()
+        .key(d => d.fips)
+        .rollup(d => d3.max(d, g => g.totalTestResults)
+        ).entries(data)
+
+      // Convert flattened arrays to object
+      let mapData = {}
+      maxValuesPerState.forEach(d => { mapData[d.key] = d.value })
+
+      const colorScale = d3.scaleSequential(d3.interpolateWarm)
+        .domain([
+          d3.max(maxValuesPerState, d => Math.log(d.value)),
+          d3.min(maxValuesPerState, d => Math.log(d.value))
+        ])
+
       svg.selectAll("g").remove()
 
       svg.append("g")
@@ -247,14 +265,16 @@ function App() {
         .data(us.features)
         .enter().append("path")
           .attr("d", path)
-          // .attr("state-fips", (d, i) => us.objects.states.geometries[i].id)
+          .attr("fill", d => {
+            return colorScale(Math.log(mapData[d.id]))
+          })
 
       svg.append("path")
           .classed("state-borders", true)
           .attr("d", path)
     })
 
-  }, [dimensions])
+  }, [data, dimensions])
 
 
   const Selector = () => (
