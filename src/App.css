@@ -111,11 +111,16 @@ table {
     margin: 0;
     height: 80vh;
     width: 100vw;
-    background-color: #00b8aa;
+    color: #000;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     font-size: 32px;
+  }
+
+  #rotate-device img {
+    width: 200px;
   }
 
   .App-body {

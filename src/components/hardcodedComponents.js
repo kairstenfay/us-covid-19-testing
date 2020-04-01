@@ -2,6 +2,7 @@ import React from "react";
 import gh from "../img/gh.png"
 import twitter from "../img/twitter.png"
 import styled from "styled-components"
+import rotateDevice from "../img/rotate-device.png"
 
 
 const IntroText = styled.div`
@@ -44,4 +45,11 @@ const Header = () => (
     </header>
 )
 
-export { Intro, Header }
+const RotateDevice = () => (
+  <p id="rotate-device">
+    Please rotate your device
+    <img src={rotateDevice} alt="rotate mobile device" />
+  </p>
+)
+
+export { Intro, Header, RotateDevice }

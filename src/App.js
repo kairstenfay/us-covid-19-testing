@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import "./App.css";
 import * as d3 from "d3";
-import { Intro, Header } from "./components/hardcodedComponents"
+import { Intro, Header, RotateDevice } from "./components/hardcodedComponents"
 import { chartTooltipText, mapTooltipText } from "./components/ToolTip"
 import { VizControls, ToolTip } from "./components/styledComponents"
 import { Legend } from "./components/Legend"
@@ -316,8 +316,7 @@ function App() {
   return (
     <div className="App">
       <Header />
-
-      <p id="rotate-device">Please rotate your device</p>
+      <RotateDevice />
       <div className="App-body">
         <Intro />
         <div id="viz-controls">
