@@ -24,7 +24,7 @@ const Intro = () => (
         not all states report numbers consistently</a>.
       </p>
       <p>
-        Because there are so much missing data, especially from states early in
+        Because there are so many missing data, especially from states early in
         the outbreak, I am casting <code>null</code> values to 0 here.
       </p>
     </IntroText>
