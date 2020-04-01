@@ -61,7 +61,7 @@ table {
 }
 
 .states :hover {
-  fill: #fe625e;
+  opacity: 0.5;
 }
 
 .logo {
