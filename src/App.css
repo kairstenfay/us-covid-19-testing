@@ -14,7 +14,7 @@ table {
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #00b8a9;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,6 +34,10 @@ table {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.App-body p {
+  font-size: calc(9px + 1vmin);
 }
 
 .data:hover {
