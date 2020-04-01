@@ -48,7 +48,7 @@ const LegendLi = styled.li`
   list-style-type: none;
   line-height: ${LEGEND_BAR_HEIGHT + LEGEND_PADDING}px;
 `
-const ToolTip = styled.p`
+const ToolTip = styled.div`
   margin: 0;
   padding: 5px;
   text-align: left;
@@ -175,18 +175,20 @@ function App() {
   const formatTooltipText = (datum, dataName) => {
     return (
       <table>
-        <tr>
-          <th>state</th>
-          <td>{datum.state}</td>
-        </tr>
-        <tr>
-          <th>date</th>
-          <td>{datum.date}</td>
-        </tr>
-        <tr>
-          <th>{dataName}s</th>
-          <td>{datum[dataName]}</td>
-        </tr>
+        <tbody>
+          <tr>
+            <th>state</th>
+            <td>{datum.state}</td>
+          </tr>
+          <tr>
+            <th>date</th>
+            <td>{datum.date}</td>
+          </tr>
+          <tr>
+            <th>{dataName}s</th>
+            <td>{datum[dataName]}</td>
+          </tr>
+        </tbody>
       </table>
     )
   }
