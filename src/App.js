@@ -192,7 +192,7 @@ function App() {
 // Render legend
   const Legend = () => {
     const renderLegendBars = (barName, index) => (
-      <rect className={`data ${barName}`}
+      <rect key={barName} className={`data ${barName}`}
         x={LEGEND_PADDING}
         y={(LEGEND_BAR_HEIGHT + LEGEND_PADDING) * index + 4}
         width={BAR_WIDTH}
