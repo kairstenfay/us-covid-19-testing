@@ -1,62 +1,21 @@
 import React, { useRef, useEffect, useState } from "react";
 import "./App.css";
 import * as d3 from "d3";
-import styled from "styled-components"
 import { Intro, Header } from "./components/hardcodedComponents"
+import { formatTooltipText } from "./components/ToolTip"
+import { VizControls, ToolTip } from "./components/styledComponents"
+import { Legend } from "./components/Legend"
+import { BAR_WIDTH, CIRCLE_RADIUS, MARGIN, TOOLTIP_WIDTH } from "./constants"
+import { formatDate, parseDate, scales } from "./utils"
 
-
-const parseDate = d3.timeParse("%Y%m%d")
-const formatDate = d3.timeFormat("%m-%d")
-const margin = ({top: 10, right: 90, bottom: 10, left: 100})
-const BAR_WIDTH = 10  // todo programmatically determine width
-const CIRCLE_RADIUS = 3  // todo programatically determine radius
 const DEFAULT_STATE_VALUE = 'NY'
 const MAX_MAP_WIDTH = 900
 const MAX_MAP_HEIGHT = 400
 const MAX_BARCHART_WIDTH = 1000
 const MAP_RATIO = MAX_MAP_HEIGHT / MAX_MAP_WIDTH
-const LEGEND_PADDING = 5
-const LEGEND_BAR_HEIGHT = 10
-const TOOLTIP_WIDTH = 125
 
 const SCATTERPLOT_RATIO = 0.4
 
-const foregroundStyling = `
-  background-color: white;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #c7c7c7;
-`
-const VizControls = styled.p`
-  ${foregroundStyling}
-`
-const LegendDiv = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  text-align: left;
-  align-items: center;
-  max-width: 200px;
-  ${foregroundStyling}
-`
-const LegendUl = styled.ul`
-  margin: 0;
-  padding-left: ${LEGEND_PADDING}px
-`
-const LegendLi = styled.li`
-  margin-top: -1px;
-  list-style-type: none;
-  line-height: ${LEGEND_BAR_HEIGHT + LEGEND_PADDING}px;
-`
-const ToolTip = styled.div`
-  margin: 0;
-  padding: 5px;
-  text-align: left;
-  width: ${TOOLTIP_WIDTH}px;
-  opacity: 90%;
-  ${foregroundStyling}
-}
-`
 
 async function getData() {
   const data = await d3.json("https://covidtracking.com/api/states/daily")
@@ -87,27 +46,6 @@ async function getFipsMapper() {
 //   return await d3.json('https://gist.github.com/mshafrir/2646763#file-states_hash-json')
 // }
 
-/**
- *
- * @param {*} data
- * @param {Object} dimensions {w: int, h: int}
- */
-const scales = (data, dimensions) => {
-  const dateRange = data.map(d => d.rawDate)
-    .filter((value, index, arr) => arr.indexOf(value) === index)
-    .sort()
-    .map(d => parseDate(d))
-
-  const x = d3.scaleTime()
-      .domain([Math.min(...dateRange), Math.max(...dateRange)])
-      .range([margin.left, dimensions.w - margin.right])
-
-  const y = d3.scaleLinear()
-      .domain([0, d3.max(data, d => d.totalTestResults) || 1]).nice()
-      .range([dimensions.h - margin.bottom, margin.top])
-
-  return {x, y}
-}
 
 const t = d3.transition()
   .duration(750)
@@ -168,61 +106,6 @@ function App() {
     }
   })
 
-  const formatTooltipText = (datum, dataName) => {
-    return (
-      <table>
-        <tbody>
-          <tr>
-            <th>state</th>
-            <td>{datum.state}</td>
-          </tr>
-          <tr>
-            <th>date</th>
-            <td>{datum.date}</td>
-          </tr>
-          <tr>
-            <th>{dataName}s</th>
-            <td>{datum[dataName]}</td>
-          </tr>
-        </tbody>
-      </table>
-    )
-  }
-
-// Render legend
-  const Legend = () => {
-    const renderLegendBars = (barName, index) => (
-      <rect key={barName} className={`data ${barName}`}
-        x={LEGEND_PADDING}
-        y={(LEGEND_BAR_HEIGHT + LEGEND_PADDING) * index + 4}
-        width={BAR_WIDTH}
-        height={LEGEND_BAR_HEIGHT} />
-    )
-
-    // Array('positive', 'negative').map((d, i) => addLegendBar(d, i))
-    return (
-      <LegendDiv id="legend">
-        <h3>Legend</h3>
-        <svg
-          width={BAR_WIDTH + LEGEND_PADDING}
-          height={(LEGEND_BAR_HEIGHT + LEGEND_PADDING) * 3 }>
-          <g>
-            { Array('negative', 'positive')
-                .map((barName, i) => renderLegendBars(barName, i)) }
-            <circle className="data death"
-              r={CIRCLE_RADIUS}
-              cx={LEGEND_PADDING + CIRCLE_RADIUS * 2}
-              cy={3 * LEGEND_BAR_HEIGHT + LEGEND_PADDING + 3} />
-          </g>
-        </svg>
-        <LegendUl>
-          <LegendLi>Negative</LegendLi>
-          <LegendLi>Positive</LegendLi>
-          <LegendLi>Deaths</LegendLi>
-        </LegendUl>
-      </LegendDiv>
-    )
-  }
 
 // Render scatterplot
   useEffect(() => {
@@ -287,21 +170,21 @@ function App() {
 
       // Axes
       const xAxis = g => g
-        .attr("transform", `translate(${BAR_WIDTH / 2},${dimensions.h - margin.bottom})`)
+        .attr("transform", `translate(${BAR_WIDTH / 2},${dimensions.h - MARGIN.bottom})`)
         .call(d3.axisBottom(x)
                 .ticks(5)
                 .tickFormat(i => formatDate(i))
                 .tickSizeOuter(0))
         .call(g => g.append("text")
           .attr("x", dimensions.w / 2)
-          .attr("y", margin.bottom * 4)
+          .attr("y", MARGIN.bottom * 4)
           .attr("fill", "black")
           .attr("text-anchor", "middle")
           .text("Date (mm-dd)"))
         .classed("xAxis", true)
 
       const yAxis = g => g
-        .attr("transform", `translate(${margin.left},0)`)
+        .attr("transform", `translate(${MARGIN.left},0)`)
         .call(d3.axisLeft(y))
         // Remove the axis line
         .call(g => g.select(".domain").remove())
@@ -309,7 +192,7 @@ function App() {
         .call(g => g.append("text")
           .attr("transform", "rotate(-90)")
           .attr("x", 0 - dimensions.h / 2)
-          .attr("y", 0 - margin.left / 2)
+          .attr("y", 0 - MARGIN.left / 2)
           .attr("fill", "black")
           .attr("text-anchor", "middle")
           .text('Cumulative total'))
