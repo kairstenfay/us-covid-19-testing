@@ -13,6 +13,7 @@ const CIRCLE_RADIUS = 3  // todo programatically determine radius
 const DEFAULT_STATE_VALUE = 'NY'
 const MAX_MAP_WIDTH = 900
 const MAX_MAP_HEIGHT = 400
+const MAX_BARCHART_WIDTH = 1000
 const MAP_RATIO = MAX_MAP_HEIGHT / MAX_MAP_WIDTH
 const LEGEND_PADDING = 5
 const LEGEND_BAR_HEIGHT = 10
@@ -157,9 +158,10 @@ function App() {
 
   useEffect(() => {
     function handleResize() {
+      const width = Math.min(window.innerWidth, MAX_BARCHART_WIDTH)
       setDimensions({
-        h: window.innerWidth * SCATTERPLOT_RATIO,
-        w: window.innerWidth
+        h: width * SCATTERPLOT_RATIO,
+        w: width
       })
     }
 
@@ -337,11 +339,13 @@ function App() {
 
       svg.append("g")
         .call(yAxis)
+
   })}, [state, data, dimensions])
 
 
 // Render US States choropleth map
   useEffect(() => {
+    // TODO: using barchart dimensions for map. is that desirable?
     const mapWidth = Math.min(dimensions.w, MAX_MAP_WIDTH)
     const mapHeight = Math.min(dimensions.h, MAX_MAP_HEIGHT)
     const svg = d3.select(mapRef.current)
