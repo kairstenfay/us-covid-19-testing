@@ -25,8 +25,9 @@ table {
 
 .App-header a {
   color: white;
-  font-size: calc(2px + 2vmin);
+  font-size: calc(4px + 2vmin);
   text-decoration: none;
+  font-weight: 500;
   height: 20vh;
 }
 
