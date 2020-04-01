@@ -1,6 +1,6 @@
 import React from "react";
 
-const formatTooltipText = (datum, dataName) => {
+const chartTooltipText = (datum, dataName) => {
     return (
       <table>
         <tbody>
@@ -21,4 +21,15 @@ const formatTooltipText = (datum, dataName) => {
     )
   }
 
-export { formatTooltipText }
+const mapTooltipText = (state, value) => (
+  <>
+    <p>
+      <strong>{state}</strong> has performed {value} COVID-19 tests.
+    </p>
+    <p>
+      Tap or click for more details.
+    </p>
+  </>
+)
+
+export { chartTooltipText, mapTooltipText }

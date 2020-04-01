@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import "./App.css";
 import * as d3 from "d3";
 import { Intro, Header } from "./components/hardcodedComponents"
-import { formatTooltipText } from "./components/ToolTip"
+import { chartTooltipText, mapTooltipText } from "./components/ToolTip"
 import { VizControls, ToolTip } from "./components/styledComponents"
 import { Legend } from "./components/Legend"
 import { BAR_WIDTH, CIRCLE_RADIUS, MARGIN, TOOLTIP_WIDTH } from "./constants"
@@ -126,7 +126,7 @@ function App() {
         .attr("cy", d => y(d.death))
           .attr("r", CIRCLE_RADIUS)
         .on("mouseover", function(d) {
-          setTooltipText(formatTooltipText(d, 'death'))
+          setTooltipText(chartTooltipText(d, 'death'))
           setTooltipStyles({
             position: "absolute",
             left: `${d3.event.pageX - (TOOLTIP_WIDTH + BAR_WIDTH) / 2}px`,
@@ -153,7 +153,7 @@ function App() {
             .attr("height", d => y(0) - y(d[barName]))
             .attr("width", BAR_WIDTH)
           .on("mouseover", function(d) {
-            setTooltipText(formatTooltipText(d, barName))
+            setTooltipText(chartTooltipText(d, barName))
             setTooltipStyles({
               position: "absolute",
               left: `${d3.event.pageX - (TOOLTIP_WIDTH + BAR_WIDTH) / 2}px`,
@@ -268,10 +268,12 @@ function App() {
           .attr("d", path)
           .attr("fill", d => colorScale(Math.log(mapData[d.id])))
           .on("mouseover", function(d) {
-            setTooltipText(fipsMapper[d.id].abbreviation)
+            const state = fipsMapper[d.id].abbreviation
+
+            setTooltipText(mapTooltipText(state, mapData[d.id]))
             setTooltipStyles({
               position: "absolute",
-              left: `${d3.event.pageX - (TOOLTIP_WIDTH + BAR_WIDTH) / 2}px`,
+              left: `${d3.event.pageX + 10}px`,
               top: `${d3.event.pageY - 100}px`
             })
           })

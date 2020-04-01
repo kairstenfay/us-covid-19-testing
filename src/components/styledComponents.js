@@ -32,7 +32,6 @@ const ToolTip = styled.div`
   margin: 0;
   padding: 5px;
   text-align: left;
-  width: ${TOOLTIP_WIDTH}px;
   opacity: 90%;
   ${foregroundStyling}
 }
