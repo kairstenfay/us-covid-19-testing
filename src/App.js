@@ -238,9 +238,10 @@ function App() {
     const path = d3.geoPath().projection(projection)
     const us = getGeojson()
 
-    Promise.all([us, data]).then((values) => {
+    Promise.all([us, data, fipsMapper]).then((values) => {
       const us = values[0]
       const data = values[1]
+      const fipsMapper = values[2]
 
       const maxValuesPerState = d3.nest()
         .key(d => d.fips)
@@ -265,8 +266,20 @@ function App() {
         .data(us.features)
         .enter().append("path")
           .attr("d", path)
-          .attr("fill", d => {
-            return colorScale(Math.log(mapData[d.id]))
+          .attr("fill", d => colorScale(Math.log(mapData[d.id])))
+          .on("mouseover", function(d) {
+            setTooltipText(fipsMapper[d.id].abbreviation)
+            setTooltipStyles({
+              position: "absolute",
+              left: `${d3.event.pageX - (TOOLTIP_WIDTH + BAR_WIDTH) / 2}px`,
+              top: `${d3.event.pageY - 100}px`
+            })
+          })
+          .on("mouseout", function(d) {
+            setTooltipStyles({
+              display: "none"
+            })
+            setTooltipText()
           })
 
       svg.append("path")
@@ -274,7 +287,7 @@ function App() {
           .attr("d", path)
     })
 
-  }, [data, dimensions])
+  }, [data, dimensions, fipsMapper])
 
 
   const Selector = () => (
