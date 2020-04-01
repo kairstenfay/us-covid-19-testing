@@ -7,7 +7,7 @@ const LEGEND_PADDING = 5
 
 const MARGIN = ({top: 10, right: 90, bottom: 10, left: 100})
 
-const TOOLTIP_WIDTH = 125
+const TOOLTIP_WIDTH = 150
 
 export {
     BAR_WIDTH,
