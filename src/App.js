@@ -291,6 +291,7 @@ function App() {
       const xAxis = g => g
         .attr("transform", `translate(${BAR_WIDTH / 2},${dimensions.h - margin.bottom})`)
         .call(d3.axisBottom(x)
+                .ticks(5)
                 .tickFormat(i => formatDate(i))
                 .tickSizeOuter(0))
         .call(g => g.append("text")
