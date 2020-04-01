@@ -1,9 +1,9 @@
 import React, { useRef, useEffect, useState } from "react";
 import "./App.css";
 import * as d3 from "d3";
-import gh from "./img/gh.png"
-import twitter from "./img/twitter.png"
 import styled from "styled-components"
+import { Intro, Header } from "./components/hardcodedComponents"
+
 
 const parseDate = d3.timeParse("%Y%m%d")
 const formatDate = d3.timeFormat("%m-%d")
@@ -56,10 +56,6 @@ const ToolTip = styled.div`
   opacity: 90%;
   ${foregroundStyling}
 }
-`
-const IntroText = styled.div`
-  width: 80%;
-  font-size: calc(10px + 1vmin);
 `
 
 async function getData() {
@@ -377,20 +373,6 @@ function App() {
 
   }, [dimensions])
 
-  const Header = () => (
-    <header className="App-header">
-      <h1>COVID-19 Testing Progress</h1>
-      <p>U.S. States and Territories</p>
-      <span>
-        <a href="https://github.com/kairstenfay/us-covid-19-testing">
-          <img className="logo" id="gh" src={gh} alt="GitHub" /> GitHub
-        </a>
-        <a href="https://twitter.com/databae_">
-          <img className="logo" id="twitter" src={twitter} alt="Twitter" /> Twitter
-        </a>
-      </span>
-    </header>
-  )
 
   const Selector = () => (
     <select id="state-selector"
@@ -403,25 +385,6 @@ function App() {
     </select>
   )
 
-  const Intro = () => (
-    <IntroText>
-      <p>
-        How many COVID-19 tests have U.S. states and territories administered?
-        These answers are surprisingly hard to find, as the CDC does not
-        currently report the number of people tested or test results.
-      </p>
-      <p>
-        These data are sourced from state public health authorities
-        by <a href="https://covidtracking.com/">The COVID Tracking Project</a>.
-        The site notes that <a href="https://covidtracking.com/about-tracker/">
-        not all states report numbers consistently</a>.
-      </p>
-      <p>
-        Because there are so much missing data, especially from states early in
-        the outbreak, I am casting <code>null</code> values to 0 here.
-      </p>
-    </IntroText>
-  )
 
   const VizHeader = () => (
     <div id="viz-header">
