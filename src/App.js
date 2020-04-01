@@ -74,7 +74,7 @@ async function getData() {
       d['negative'] = d.negative || 0
       d['pending'] = d.pending || 0
       d['death'] = d.death || 0
-      d['total'] = d.total || 0
+      d['totalTestResults'] = d.totalTestResults || 0
     })
   return data
 }
@@ -107,7 +107,7 @@ const scales = (data, dimensions) => {
       .range([margin.left, dimensions.w - margin.right])
 
   const y = d3.scaleLinear()
-      .domain([0, d3.max(data, d => d.total) || 1]).nice()
+      .domain([0, d3.max(data, d => d.totalTestResults) || 1]).nice()
       .range([dimensions.h - margin.bottom, margin.top])
 
   return {x, y}
