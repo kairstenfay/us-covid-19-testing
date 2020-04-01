@@ -268,8 +268,8 @@ function App() {
             .classed(`data ${barName}`, true)
             .attr("data-state", d => d.state)
             .attr("x", d => x(parseDate(d.rawDate)))
-            .attr("y", d => y(d[barName]))
-            .attr("height", d => d[`${barName}-height`])
+            .attr("y", d => d[`${barName}-y`])
+            .attr("height", d => y(0) - y(d[barName]))
             .attr("width", BAR_WIDTH)
           .on("mouseover", function(d) {
             setTooltipText(formatTooltipText(d, barName))
@@ -322,9 +322,8 @@ function App() {
       const {x, y} = scales(data, dimensions)
 
       data.forEach(d => {
-        d['positive-height'] = y(0) - y(d.positive)
-        d['negative-height'] = y(d.positive) - y(d.negative)
-        d['pending-height'] = y(d.positive) - y(d.negative) - y(d.pending)
+        d['positive-y'] = y(d.positive)
+        d['negative-y'] = y(d.positive + d.negative)
       })
 
       svg.selectAll("circle").remove()
