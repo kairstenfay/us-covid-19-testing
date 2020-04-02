@@ -226,14 +226,20 @@ function App() {
 
 // Render US States choropleth map
   useEffect(() => {
-    // TODO: using barchart dimensions for map. is that desirable?
-    const mapWidth = Math.min(dimensions.w, MAX_MAP_WIDTH)
-    const mapHeight = Math.min(dimensions.h, MAX_MAP_HEIGHT)
+    const mapWidth = Math.min(window.innerWidth, MAX_MAP_WIDTH)
+    const mapHeight = Math.min(window.innerHeight, MAX_MAP_HEIGHT)
     const svg = d3.select(mapRef.current)
 
+    let scale = mapWidth * .9
+    let translation = mapWidth * 0.5
+    if (window.innerWidth >= 900) {
+      scale -= TOOLTIP_WIDTH + 200
+      translation -= TOOLTIP_WIDTH
+    }
+
     const projection = d3.geoAlbers()
-      .scale(mapWidth * .4)
-      .translate([mapWidth / 4, mapHeight * .6])
+      .scale(scale)
+      .translate([translation, mapHeight * .5])
 
     const path = d3.geoPath().projection(projection)
     const us = getGeojson()
@@ -328,8 +334,8 @@ function App() {
             <Selector />
           </VizControls>
           <svg ref={mapRef}
-            width={Math.min(dimensions.w, MAX_MAP_WIDTH)}
-            height={Math.min(dimensions.h, MAX_MAP_HEIGHT)}
+            width={Math.min(window.innerWidth, MAX_MAP_WIDTH)}
+            height={Math.min(window.innerHeight, MAX_MAP_HEIGHT)}
             onClick={handleMapClick} />
           <br />
         </div>
