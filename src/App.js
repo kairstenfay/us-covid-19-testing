@@ -268,7 +268,9 @@ function App() {
           .attr("d", path)
           .attr("fill", d => colorScale(Math.log(mapData[d.id])))
           .on("mouseover", function(d) {
-            const state = fipsMapper[d.id].abbreviation
+            // Address known bug with Puerto Rico fips code in mapping data
+            const fips = d.id === '72' ? '43' : d.id
+            const state = fipsMapper[fips].abbreviation
 
             setTooltipText(mapTooltipText(state, mapData[d.id]))
             setTooltipStyles({
