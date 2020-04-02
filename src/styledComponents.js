@@ -9,6 +9,7 @@ const foregroundStyling = `
 `
 const VizControls = styled.p`
   ${foregroundStyling}
+  min-width: 300px;
 `
 const LegendDiv = styled.div`
   display: flex;
@@ -28,7 +29,7 @@ const LegendLi = styled.li`
   list-style-type: none;
   line-height: ${LEGEND_BAR_HEIGHT + LEGEND_PADDING}px;
 `
-const ToolTip = styled.div`
+const ChartTooltipDiv = styled.div`
   margin: 0;
   padding: 5px;
   text-align: left;
@@ -38,4 +39,4 @@ const ToolTip = styled.div`
 }
 `
 
-export { VizControls, LegendDiv, LegendUl, LegendLi, ToolTip }
+export { VizControls, LegendDiv, LegendUl, LegendLi, ChartTooltipDiv }

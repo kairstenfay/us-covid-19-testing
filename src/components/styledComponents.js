@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { LEGEND_BAR_HEIGHT, LEGEND_PADDING, TOOLTIP_WIDTH } from "../constants"
+import { LEGEND_BAR_HEIGHT, LEGEND_PADDING, Tooltip_WIDTH } from "../constants"
 
 const IntroText = styled.div`
   width: 70%;
@@ -34,7 +34,7 @@ const LegendLi = styled.li`
   list-style-type: none;
   line-height: ${LEGEND_BAR_HEIGHT + LEGEND_PADDING}px;
 `
-const ToolTip = styled.div`
+const ChartTooltipDiv = styled.div`
   margin: 0;
   padding: 5px;
   text-align: left;
@@ -43,4 +43,4 @@ const ToolTip = styled.div`
 }
 `
 
-export { IntroText, VizControls, LegendDiv, LegendUl, LegendLi, ToolTip }
+export { IntroText, VizControls, LegendDiv, LegendUl, LegendLi, ChartTooltipDiv }

@@ -103,6 +103,13 @@ table {
   place-items: center;
 }
 
+.viz-container {
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  padding: 5px;
+}
+
 @media (max-width: 500px) {
   .App-header {
     height: 20vh;
@@ -138,5 +145,11 @@ table {
 @media (min-width: 900px) {
   #viz-controls {
     flex-direction: row;
+    place-items: flex-start;
+  }
+
+  #viz-container {
+    align-items: left;
+    justify-content: left;
   }
 }

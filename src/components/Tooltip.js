@@ -1,6 +1,8 @@
 import React from "react";
+import styled from "styled-components"
 
-const chartTooltipText = (datum, dataName) => {
+
+const ChartTooltip = (datum, dataName) => {
     return (
       <table>
         <tbody>
@@ -21,7 +23,7 @@ const chartTooltipText = (datum, dataName) => {
     )
   }
 
-const mapTooltipText = (state, value) => (
+const MapTooltip = (state, value) => (
   <>
     <p>
       <strong>{state}</strong> has performed {value} COVID-19 tests.
@@ -32,4 +34,9 @@ const mapTooltipText = (state, value) => (
   </>
 )
 
-export { chartTooltipText, mapTooltipText }
+
+const MapTooltipDiv = styled.div`
+  height: 0;
+`
+
+export { ChartTooltip, MapTooltip, MapTooltipDiv }

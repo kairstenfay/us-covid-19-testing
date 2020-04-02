@@ -2,8 +2,8 @@ import React, { useRef, useEffect, useState } from "react";
 import "./App.css";
 import * as d3 from "d3";
 import { Intro, Header, RotateDevice } from "./components/hardcodedComponents"
-import { chartTooltipText, mapTooltipText } from "./components/ToolTip"
-import { VizControls, ToolTip } from "./components/styledComponents"
+import { ChartTooltip, MapTooltip, MapTooltipDiv } from "./components/Tooltip"
+import { VizControls, ChartTooltipDiv } from "./components/styledComponents"
 import { Legend } from "./components/Legend"
 import { BAR_WIDTH, CIRCLE_RADIUS, MARGIN, TOOLTIP_WIDTH } from "./constants"
 import { formatDate, parseDate, scales } from "./utils"
@@ -64,10 +64,12 @@ function App() {
     h: window.innerWidth * SCATTERPLOT_RATIO,
     w: window.innerWidth
   })
-  const [tooltipStyles, setTooltipStyles] = useState({
+  const [chartTooltipStyles, setChartTooltipStyles] = useState({
     display: "none"
   })
-  const [tooltipText, setTooltipText] = useState()
+
+  const [chartTooltipText, setChartTooltipText] = useState()
+  const [mapTooltipText, setMapTooltipText] = useState()
 
   const scatterplotRef = useRef()
   const mapRef = useRef()
@@ -126,18 +128,18 @@ function App() {
         .attr("cy", d => y(d.death))
           .attr("r", CIRCLE_RADIUS)
         .on("mouseover", function(d) {
-          setTooltipText(chartTooltipText(d, 'death'))
-          setTooltipStyles({
+          setChartTooltipText(ChartTooltip(d, 'death'))
+          setChartTooltipStyles({
             position: "absolute",
             left: `${d3.event.pageX - (TOOLTIP_WIDTH + BAR_WIDTH) / 2}px`,
             top: `${d3.event.pageY - 100}px`
           })
         })
         .on("mouseout", function(d) {
-          setTooltipStyles({
+          setChartTooltipStyles({
             display: "none"
           })
-          setTooltipText()
+          setChartTooltipText()
         })
       )
 
@@ -153,18 +155,18 @@ function App() {
             .attr("height", d => y(0) - y(d[barName]))
             .attr("width", BAR_WIDTH)
           .on("mouseover", function(d) {
-            setTooltipText(chartTooltipText(d, barName))
-            setTooltipStyles({
+            setChartTooltipText(ChartTooltip(d, barName))
+            setChartTooltipStyles({
               position: "absolute",
               left: `${d3.event.pageX - (TOOLTIP_WIDTH + BAR_WIDTH) / 2}px`,
               top: `${d3.event.pageY - 100}px`
             })
           })
           .on("mouseout", function(d) {
-            setTooltipStyles({
+            setChartTooltipStyles({
               display: "none"
             })
-            setTooltipText()
+            setChartTooltipText()
           })
       )
 
@@ -278,18 +280,10 @@ function App() {
             const fips = d.id === '72' ? '43' : d.id
             const state = fipsMapper[fips].abbreviation
 
-            setTooltipText(mapTooltipText(state, mapData[d.id]))
-            setTooltipStyles({
-              position: "absolute",
-              left: `${d3.event.pageX + 10}px`,
-              top: `${d3.event.pageY - 100}px`
-            })
+            setMapTooltipText(MapTooltip(state, mapData[d.id]))
           })
           .on("mouseout", function(d) {
-            setTooltipStyles({
-              display: "none"
-            })
-            setTooltipText()
+            setMapTooltipText()
           })
 
       svg.append("path")
@@ -328,11 +322,16 @@ function App() {
       <div className="App-body">
         <Intro />
         <div id="viz-controls">
-          <VizControls>
-            Select a state from the map or the dropdown below.
-            <br />
-            <Selector />
-          </VizControls>
+          <div className="viz-control text">
+            <VizControls>
+              Select a state from the map or the dropdown below.
+              <br />
+              <Selector />
+            </VizControls>
+              <MapTooltipDiv id="map-tooltip">
+                {mapTooltipText}
+              </MapTooltipDiv>
+          </div>
           <svg ref={mapRef}
             width={Math.min(window.innerWidth, MAX_MAP_WIDTH)}
             height={Math.min(window.innerHeight, MAX_MAP_HEIGHT)}
@@ -345,9 +344,9 @@ function App() {
           <svg ref={scatterplotRef}
             width={dimensions.w}
             height={dimensions.w / 2} />
-          <ToolTip id="tooltip" style={tooltipStyles}>
-              {tooltipText}
-          </ToolTip>
+          <ChartTooltipDiv id="chart-tooltip" style={chartTooltipStyles}>
+              {chartTooltipText}
+          </ChartTooltipDiv>
         </div>
       </div>
     </div>
