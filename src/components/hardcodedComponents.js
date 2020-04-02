@@ -6,7 +6,7 @@ import rotateDevice from "../img/rotate-device.png"
 import { IntroText } from "./styledComponents"
 
 const Intro = () => (
-    <IntroText>
+    <IntroText id="intro-text">
       <p>
         How many COVID-19 tests have U.S. states and territories administered?
         These answers are surprisingly hard to find, as the CDC does not

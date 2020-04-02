@@ -2,8 +2,10 @@ import styled from "styled-components"
 import { LEGEND_BAR_HEIGHT, LEGEND_PADDING, TOOLTIP_WIDTH } from "../constants"
 
 const IntroText = styled.div`
-  width: 80%;
+  width: 70%;
   font-size: calc(10px + 1vmin);
+  padding: 25px;
+  text-align: left;
 `
 const foregroundStyling = `
   background-color: white;
