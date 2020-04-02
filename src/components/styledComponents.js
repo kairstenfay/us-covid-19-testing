@@ -1,6 +1,10 @@
 import styled from "styled-components"
 import { LEGEND_BAR_HEIGHT, LEGEND_PADDING, TOOLTIP_WIDTH } from "../constants"
 
+const IntroText = styled.div`
+  width: 80%;
+  font-size: calc(10px + 1vmin);
+`
 const foregroundStyling = `
   background-color: white;
   padding: 10px;
@@ -37,4 +41,4 @@ const ToolTip = styled.div`
 }
 `
 
-export { VizControls, LegendDiv, LegendUl, LegendLi, ToolTip }
+export { IntroText, VizControls, LegendDiv, LegendUl, LegendLi, ToolTip }

@@ -3,12 +3,7 @@ import gh from "../img/gh.png"
 import twitter from "../img/twitter.png"
 import styled from "styled-components"
 import rotateDevice from "../img/rotate-device.png"
-
-
-const IntroText = styled.div`
-  width: 80%;
-  font-size: calc(10px + 1vmin);
-`
+import { IntroText } from "./styledComponents"
 
 const Intro = () => (
     <IntroText>
