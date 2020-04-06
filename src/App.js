@@ -124,14 +124,14 @@ function App() {
         .join("circle")
         .classed('data death', true)
         .attr("data-state", d => d.state)
-        .attr("cx", d => BAR_WIDTH / 2 + CIRCLE_RADIUS / 3 + x(parseDate(d.rawDate)))
+        .attr("cx", d => barWidth / 2 + CIRCLE_RADIUS / 3 + x(parseDate(d.rawDate)))
         .attr("cy", d => y(d.death))
           .attr("r", CIRCLE_RADIUS)
         .on("mouseover", function(d) {
           setChartTooltipText(ChartTooltip(d, 'death'))
           setChartTooltipStyles({
             position: "absolute",
-            left: `${d3.event.pageX - (TOOLTIP_WIDTH + BAR_WIDTH) / 2}px`,
+            left: `${d3.event.pageX - (TOOLTIP_WIDTH + barWidth) / 2}px`,
             top: `${d3.event.pageY - 100}px`
           })
         })
@@ -153,7 +153,7 @@ function App() {
             .attr("x", d => x(parseDate(d.rawDate)))
             .attr("y", d => d[`${barName}-y`])
             .attr("height", d => y(0) - y(d[barName]))
-            .attr("width", BAR_WIDTH)
+            .attr("width", barWidth)
           .on("mouseover", function(d) {
             setChartTooltipText(ChartTooltip(d, barName))
             setChartTooltipStyles({
@@ -172,7 +172,7 @@ function App() {
 
       // Axes
       const xAxis = g => g
-        .attr("transform", `translate(${BAR_WIDTH / 2},${dimensions.h - MARGIN.bottom})`)
+        .attr("transform", `translate(${barWidth / 2},${dimensions.h - MARGIN.bottom})`)
         .call(d3.axisBottom(x)
                 .ticks(5)
                 .tickFormat(i => formatDate(i))
@@ -209,6 +209,7 @@ function App() {
         d['positive-y'] = y(d.positive)
         d['negative-y'] = y(d.positive + d.negative)
       })
+      const barWidth = (dimensions.w - MARGIN.left - MARGIN.right) / data.length
 
       svg.selectAll("circle").remove()
       svg.selectAll("g").remove()
