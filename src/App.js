@@ -131,8 +131,8 @@ function App() {
           setChartTooltipText(ChartTooltip(d, 'death'))
           setChartTooltipStyles({
             position: "absolute",
-            left: `${d3.event.pageX - (TOOLTIP_WIDTH + barWidth) / 2}px`,
-            top: `${d3.event.pageY - 100}px`
+            left: `${d3.event.pageX - TOOLTIP_WIDTH}px`,
+            top: `${d3.event.pageY - 150}px`
           })
         })
         .on("mouseout", function(d) {
@@ -158,8 +158,8 @@ function App() {
             setChartTooltipText(ChartTooltip(d, barName))
             setChartTooltipStyles({
               position: "absolute",
-              left: `${d3.event.pageX - (TOOLTIP_WIDTH + BAR_WIDTH) / 2}px`,
-              top: `${d3.event.pageY - 100}px`
+              left: `${d3.event.pageX - TOOLTIP_WIDTH}px`,
+              top: `${d3.event.pageY - 150}px`
             })
           })
           .on("mouseout", function(d) {
